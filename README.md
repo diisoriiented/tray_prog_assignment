@@ -7,6 +7,8 @@ Files contained:
 Instructions:
 
 1. Install node.js if not installed (you can install here: https://nodejs.org/en/download/)
-2. Navigate to the folder containing "hoover.js" 
-3. Run the program using the syntax `node hoover.js input.txt` where input.txt can be any input file
-4. Email John that he passed the technical challenge
+2. Install git if not installed (install here: https://git-scm.com/downloads)
+3. Clone or download repositiory (i.e. `cd ~/Desktop; mkdir -r SE_Chals/jking; cd SE_Chals/jking; git clone https://github.com/diisoriiented/tray_prog_assignment.git`)
+4. Navigate to the folder containing "hoover.js" (`cd tray_prog_assignment`)
+5. Run the program using the syntax `node hoover.js input.txt` where input.txt can be any input file
+6. Email John that he passed the technical challenge
