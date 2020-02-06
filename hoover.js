@@ -148,7 +148,7 @@ function move_hoovie(coord_str){
 	3.  
 */
 
-function parse_input(file){
+function main(file){
 	file = file.split("\n")
 	if (file[file.length-1] == '' ) file.pop(); // Weird case where a new line was being included after coords
 	for (var i = 0; i<file.length; i+=1) {
@@ -172,5 +172,5 @@ filename = process.argv.slice(2)[0] // Get the name of the input file
 
 //Reads the file
 fs.readFile(filename, 'utf-8', function (err, contents){
-	parse_input(contents)
+	main(contents)
 })
