@@ -2,7 +2,7 @@
 
 Files contained:
 
-<b>hoover.js</b> <b>normal.txt</b> <b>non_exist_coords.txt</b> <b>hitting_a_wall.txt</b> <b>dirt_notin_grid.txt</b>
+<b>hoover.js</b> / <b>normal.txt</b> / <b>non_exist_coords.txt</b> / <b>hitting_a_wall.txt</b> / <b>dirt_notin_grid.txt</b>
 
 Instructions:
 
