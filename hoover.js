@@ -56,13 +56,22 @@ function make_grid(grid_size){
 function place_hoovie(pos){
 	var coords = pos.split(' ')
 	// console.log("TTTT"+coords)
-	grid[coords[0]][coords[1]] = 'H'
 	hoovie_pos = [parseInt(coords[0]),parseInt(coords[1])]
+	if (hoovie_pos[0] >= grid_width || hoovie_pos[0] < 0 || hoovie_pos[1] >= grid_height || hoovie_pos[1] < 0){
+		console.log("It looks like Hoovie was placed in a different room! Exiting...")
+		process.exit()
+	}
+	grid[coords[0]][coords[1]] = 'H'
 	//print_grid()
 }
 
 function place_dirt(pos){
 	var coords = pos.split(' ')
+	if((coords[0] || coords[1]) < 0){console.log("Hoovie: Hey! It looks like these coordinates are negative! Please provide positive numbers")}
+	if (coords[0] >= grid_width || coords[0] < 0 || coords[1] >= grid_height || coords[1] < 0){
+		console.log("Hoovie: Dirt detected in different room... must... ignore....")
+		return
+	}
 	grid[coords[0]][coords[1]] = 'D'
 	//print_grid()
 }
@@ -77,12 +86,12 @@ function move_hoovie(coord_str){
 			case 'N':
 				console.log("Hoovie: Moving up!")
 				if ( y+1 > grid_height){
-					console.log("Alert: Hoovie hit a wall!")
+					console.log("Hoovie: Ouch! I hit a wall!")
 					break;
 				}else{
 					if (grid[x][y+1] == "D"){
 						dirt_count++;
-						console.log("Slurpppppp! Dirt cleaned!");
+						console.log("Hoovie: Slurpppppp! Dirt cleaned!");
 					}
 					grid[x][y] = "0"
 					grid[x][y+1] = "H"
@@ -92,12 +101,12 @@ function move_hoovie(coord_str){
 			case 'S':
 				console.log("Hoovie: Moving down!")
 				if ( y-1 < 0){
-					console.log("Alert: Hoovie hit a wall!")
+					console.log("Hoovie: Ouch! I hit a wall!")
 					break;
 				}else{
 					if (grid[x][y-1] == "D"){
 						dirt_count++;
-						console.log("Slurpppppp! Dirt cleaned!");
+						console.log("Hoovie: Slurpppppp! Dirt cleaned!");
 					}
 					grid[x][y] = "0"
 					grid[x][y-1] = "H"
@@ -107,12 +116,12 @@ function move_hoovie(coord_str){
 			case 'E':
 				console.log("Hoovie: Moving right!")
 				if ( x+1 > grid_width){
-					console.log("Alert: Hoovie hit a wall!")
+					console.log("Hoovie: Ouch! I hit a wall!")
 					break;
 				}else{
 					if (grid[x+1][y] == "D"){
 						dirt_count++;
-						console.log("Slurpppppp! Dirt cleaned!");
+						console.log("Hoovie: Slurpppppp! Dirt cleaned!");
 					}
 					grid[x][y] = "0"
 					grid[x+1][y] = "H"
@@ -122,12 +131,12 @@ function move_hoovie(coord_str){
 			case 'W':
 				console.log("Hoovie: Moving left!")
 				if ( x-1 < 0){
-					console.log("Alert: Hoovie hit a wall!")
+					console.log("Hoovie: Ouch! I hit a wall!")
 					break;
 				}else{
 					if (grid[x-1][y] == "D"){
 						dirt_count++;
-						console.log("Slurpppppp! Dirt cleaned!");
+						console.log("Hoovie: Slurpppppp! Dirt cleaned!");
 					}
 					grid[x][y] = "0"
 					grid[x-1][y] = "H"
@@ -135,18 +144,10 @@ function move_hoovie(coord_str){
 				}
 				break;
 			default:
-				console.log("Sorry, incorrect direction listed! Acceptable directions: N, S, E , or W");
+				console.log("Sorry, '" + direction + "' is not a valid direction. Acceptable directions: N, S, E , or W");
 		}
 	}
 }
-
-/*
-	Function that parses the file given as input. Calls several other functions:
-	1. make_grid()
-	2. place_dirt()
-	3. read_coords()
-	3.  
-*/
 
 function main(file){
 	file = file.split("\n")
