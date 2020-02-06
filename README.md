@@ -2,15 +2,11 @@
 
 Files contained:
 
-hoover.js
-
-normal.txt
-
-non_exist_coords.txt
-
-hitting_a_wall.txt
-
-dirt_notin_grid.txt
+*hoover.js*
+*normal.txt*
+*non_exist_coords.txt*
+*hitting_a_wall.txt*
+*dirt_notin_grid.txt*
 
 Instructions:
 
