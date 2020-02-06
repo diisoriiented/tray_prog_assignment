@@ -19,23 +19,58 @@ const fs = require("fs") // Library for reading files from the CLI
 // Global Variable Declarations
 
 let grid = [];
-let coords = ""
 let dirt_count = 0
 let hoovie_pos = [0,0]
+let curr_pos = [0,0]
+
+function print_grid(){
+	console.log("*************")
+	for (i = 0; i<grid.length; i++){
+		process.stdout.write("[ ")
+		for(j = 0; j<grid[i].length; j++){
+			process.stdout.write(grid[i][j]+" ")
+		}
+		process.stdout.write("]\n")
+	}
+}
 
 // Creates the grid as a 2D array. Uses "0"s to signify an empty space
-
 
 function make_grid(grid_size){
 	grid_size = grid_size.split(' ')
 	//console.log(grid)
 	grid = new Array(grid_size[0])
-	for (i = 0; i<grid_size[0]; i++){
+	for (var i = 0; i<grid_size[0]; i++){
 		grid[i] = []
-		for (j =0; j<grid_size[1]; j++){
+		for (var j =0; j<grid_size[1]; j++){
 			grid[i].push("0");
 		}
-		console.log(grid[i]);
+	}
+	//print_grid()
+}
+
+function place_hoovie(pos){
+	var coords = pos.split(' ')
+	grid[coords[0]][coords[1]] = 'H'
+	hoovie_pos = [coords[0]coords[1]]
+	curr_pos = hoovie_pos
+	print_grid()
+}
+
+function place_dirt(pos){
+	var coords = pos.split(' ')
+	grid[coords[0]][coords[1]] = 'D'
+	print_grid()
+}
+
+function move_hoovie(coord_str){
+	for (var i = 0; i<coord_str.length; i++){
+		direction = coord_str[i]
+		switch(direction.toUpperCase()){
+			case 'N':
+				
+
+		}
 	}
 }
 
@@ -50,10 +85,15 @@ function make_grid(grid_size){
 function parse_input(file){
 	file = file.split("\n")
 	if (file[file.length-1] == '' ) file.pop(); // Weird case where a new line was being included after coords
-	// console.log(file)
-	for (i = 0; i<file.length; i++) {
+	for (var i = 0; i<file.length; i+=1) {
 		if(i == 0){
 			make_grid(file[i])
+		} else if (i == 1){
+			place_hoovie(file[i]);
+		} else if (i < file.length-1){
+			place_dirt(file[i])
+		} else {
+			move_hoovie(file[i]
 		}
 	}
 }
