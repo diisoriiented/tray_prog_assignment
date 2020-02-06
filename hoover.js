@@ -8,7 +8,7 @@ Summary:
 
 Program which takes a file as input containing the size of a grid, positions of "dirt", and coordinates.
 The program will take the coordinates and move the "hoover" based on direction and count the number of dirt
-piles cleaned. It will also output the finishing position of the hoover
+piles cleaned. It will also output the finishing position of the hoover.
 
 */
 
@@ -93,7 +93,7 @@ function parse_input(file){
 		} else if (i < file.length-1){
 			place_dirt(file[i])
 		} else {
-			move_hoovie(file[i]
+			move_hoovie(file[i])
 		}
 	}
 }
