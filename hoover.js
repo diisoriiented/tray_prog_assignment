@@ -19,8 +19,10 @@ const fs = require("fs") // Library for reading files from the CLI
 // Global Variable Declarations
 
 let grid = [];
+let grid_width = 0
+let grid_height = 0
 let dirt_count = 0
-let hoovie_pos = [0,0]
+let  hoovie_pos = [0,0]
 let curr_pos = [0,0]
 
 function print_grid(){
@@ -40,6 +42,8 @@ function make_grid(grid_size){
 	grid_size = grid_size.split(' ')
 	//console.log(grid)
 	grid = new Array(grid_size[0])
+	grid_width = grid_size[0]
+	grid_height = grid_size[1]
 	for (var i = 0; i<grid_size[0]; i++){
 		grid[i] = []
 		for (var j =0; j<grid_size[1]; j++){
@@ -51,25 +55,87 @@ function make_grid(grid_size){
 
 function place_hoovie(pos){
 	var coords = pos.split(' ')
+	// console.log("TTTT"+coords)
 	grid[coords[0]][coords[1]] = 'H'
-	hoovie_pos = [coords[0]coords[1]]
-	curr_pos = hoovie_pos
-	print_grid()
+	hoovie_pos = [parseInt(coords[0]),parseInt(coords[1])]
+	//print_grid()
 }
 
 function place_dirt(pos){
 	var coords = pos.split(' ')
 	grid[coords[0]][coords[1]] = 'D'
-	print_grid()
+	//print_grid()
 }
 
 function move_hoovie(coord_str){
 	for (var i = 0; i<coord_str.length; i++){
 		direction = coord_str[i]
+		var x = hoovie_pos[0]
+		var y = hoovie_pos[1]
+		// print_grid()
 		switch(direction.toUpperCase()){
 			case 'N':
-				
-
+				console.log("Hoovie: Moving up!")
+				if ( y+1 > grid_height){
+					console.log("Alert: Hoovie hit a wall!")
+					break;
+				}else{
+					if (grid[x][y+1] == "D"){
+						dirt_count++;
+						console.log("Slurpppppp! Dirt cleaned!");
+					}
+					grid[x][y] = "0"
+					grid[x][y+1] = "H"
+					hoovie_pos = [x,y+1]
+				}
+				break;
+			case 'S':
+				console.log("Hoovie: Moving down!")
+				if ( y-1 < 0){
+					console.log("Alert: Hoovie hit a wall!")
+					break;
+				}else{
+					if (grid[x][y-1] == "D"){
+						dirt_count++;
+						console.log("Slurpppppp! Dirt cleaned!");
+					}
+					grid[x][y] = "0"
+					grid[x][y-1] = "H"
+					hoovie_pos = [x,y-1]
+				}
+				break;
+			case 'E':
+				console.log("Hoovie: Moving right!")
+				if ( x+1 > grid_width){
+					console.log("Alert: Hoovie hit a wall!")
+					break;
+				}else{
+					if (grid[x+1][y] == "D"){
+						dirt_count++;
+						console.log("Slurpppppp! Dirt cleaned!");
+					}
+					grid[x][y] = "0"
+					grid[x+1][y] = "H"
+					hoovie_pos = [x+1,y]
+				}
+				break;
+			case 'W':
+				console.log("Hoovie: Moving left!")
+				if ( x-1 < 0){
+					console.log("Alert: Hoovie hit a wall!")
+					break;
+				}else{
+					if (grid[x-1][y] == "D"){
+						dirt_count++;
+						console.log("Slurpppppp! Dirt cleaned!");
+					}
+					grid[x][y] = "0"
+					grid[x-1][y] = "H"
+					hoovie_pos = [x-1,y]
+				}
+				break;
+			default:
+				console.log("Sorry, incorrect direction listed! Acceptable directions: N, S, E , or W");
 		}
 	}
 }
@@ -96,6 +162,10 @@ function parse_input(file){
 			move_hoovie(file[i])
 		}
 	}
+
+	console.log("Hoovie Position: " + hoovie_pos)
+	console.log("Dirt cleaned: " + dirt_count)
+	//print_grid()
 }
 
 filename = process.argv.slice(2)[0] // Get the name of the input file
@@ -104,4 +174,3 @@ filename = process.argv.slice(2)[0] // Get the name of the input file
 fs.readFile(filename, 'utf-8', function (err, contents){
 	parse_input(contents)
 })
-
