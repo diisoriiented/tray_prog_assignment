@@ -4,9 +4,11 @@ Project: Tray.io Programming Assignment
 Author: John King
 Date: 2/6/2020
 
-Summary: Program which takes a file as input containing the size of a grid, positions of "dirt", and coordinates.
-		 The program will take the coordinates and move the "hoover" based on direction and count the number of dirt
-		 piles cleaned. It will also output the finishing position of the hoover
+Summary: 
+
+Program which takes a file as input containing the size of a grid, positions of "dirt", and coordinates.
+The program will take the coordinates and move the "hoover" based on direction and count the number of dirt
+piles cleaned. It will also output the finishing position of the hoover
 
 */
 
