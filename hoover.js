@@ -22,7 +22,7 @@ let grid = [];
 let grid_width = 0
 let grid_height = 0
 let dirt_count = 0
-let  hoovie_pos = [0,0]
+let hoovie_pos = [0,0]
 let curr_pos = [0,0]
 
 
@@ -75,7 +75,10 @@ function place_hoovie(pos){
 
 function place_dirt(pos){
 	var coords = pos.split(' ')
-	if((coords[0] || coords[1]) < 0){console.log("Hoovie: Hey! It looks like these coordinates are negative! Please provide positive numbers")}
+	if((coords[0] || coords[1]) < 0){
+		console.log("Hoovie: Hey! It looks like these coordinates are negative! Please provide positive numbers")
+		return
+	}
 	if (coords[0] >= grid_width || coords[0] < 0 || coords[1] >= grid_height || coords[1] < 0){
 		console.log("Hoovie: Dirt detected in different room... must... ignore....")
 		return
@@ -111,6 +114,7 @@ function move_hoovie(coord_str){
 						dirt_count++;
 						console.log("Hoovie: Slurpppppp! Dirt cleaned!");
 					}
+					// Moves hoovie in the grid
 					grid[x][y] = "0"
 					grid[x][y+1] = "H"
 					hoovie_pos = [x,y+1]
@@ -129,6 +133,7 @@ function move_hoovie(coord_str){
 						dirt_count++;
 						console.log("Hoovie: Slurpppppp! Dirt cleaned!");
 					}
+					// Moves hoovie in the grid
 					grid[x][y] = "0"
 					grid[x][y-1] = "H"
 					hoovie_pos = [x,y-1]
@@ -147,6 +152,7 @@ function move_hoovie(coord_str){
 						dirt_count++;
 						console.log("Hoovie: Slurpppppp! Dirt cleaned!");
 					}
+					// Moves hoovie in the grid
 					grid[x][y] = "0"
 					grid[x+1][y] = "H"
 					hoovie_pos = [x+1,y]
@@ -165,12 +171,14 @@ function move_hoovie(coord_str){
 						dirt_count++;
 						console.log("Hoovie: Slurpppppp! Dirt cleaned!");
 					}
+					// Moves hoovie in the grid
 					grid[x][y] = "0"
 					grid[x-1][y] = "H"
 					hoovie_pos = [x-1,y]
 				}
 				break;
 			default:
+				// Case to account for non cardinal directions
 				console.log("Sorry, '" + direction + "' is not a valid direction. Acceptable directions: N, S, E , or W");
 		}
 	}
