@@ -25,6 +25,9 @@ let dirt_count = 0
 let  hoovie_pos = [0,0]
 let curr_pos = [0,0]
 
+
+// Debugging function to visualize Hoovie moving around the grid
+
 function print_grid(){
 	console.log("*************")
 	for (i = 0; i<grid.length; i++){
@@ -53,9 +56,11 @@ function make_grid(grid_size){
 	//print_grid()
 }
 
+// Places Hoovie in the grid based on the coordinates in the input file. Accounts for the case where
+// coordinates are out of bounds of the grid. If they are out of bounds the program will exit.
+
 function place_hoovie(pos){
 	var coords = pos.split(' ')
-	// console.log("TTTT"+coords)
 	hoovie_pos = [parseInt(coords[0]),parseInt(coords[1])]
 	if (hoovie_pos[0] >= grid_width || hoovie_pos[0] < 0 || hoovie_pos[1] >= grid_height || hoovie_pos[1] < 0){
 		console.log("It looks like Hoovie was placed in a different room! Exiting...")
@@ -64,6 +69,9 @@ function place_hoovie(pos){
 	grid[coords[0]][coords[1]] = 'H'
 	//print_grid()
 }
+
+// Takes the coordinates of the dirt and places them in the grid similar to placing hoovie. If coordinates
+// are negative in this instance, the program ignores them instead of exiting.
 
 function place_dirt(pos){
 	var coords = pos.split(' ')
@@ -76,6 +84,13 @@ function place_dirt(pos){
 	//print_grid()
 }
 
+// Movies Hoovie based on the direction given in the coordinate string.
+// Accounts for the following edge cases:
+// 1. If the coordinate will take Hoovie out of bounds of the grid. In this case, the grid acts like a "wall"
+//    and Hoovie will remain in place.
+// 2. The coordinate string contains a character that is not 'N' 'S' 'E' or 'W'. In this instance the character
+//	  will be ignored
+
 function move_hoovie(coord_str){
 	for (var i = 0; i<coord_str.length; i++){
 		direction = coord_str[i]
@@ -83,12 +98,15 @@ function move_hoovie(coord_str){
 		var y = hoovie_pos[1]
 		// print_grid()
 		switch(direction.toUpperCase()){
+			// Case to check one position up in the grid (y+1) is one position up
 			case 'N':
 				console.log("Hoovie: Moving up!")
+				// Checks out of bounds case
 				if ( y+1 > grid_height){
 					console.log("Hoovie: Ouch! I hit a wall!")
 					break;
 				}else{
+					//Check to see if dirt is in the square Hoovie is moving to
 					if (grid[x][y+1] == "D"){
 						dirt_count++;
 						console.log("Hoovie: Slurpppppp! Dirt cleaned!");
@@ -98,12 +116,15 @@ function move_hoovie(coord_str){
 					hoovie_pos = [x,y+1]
 				}
 				break;
+			// Case to check one position down in the grid (y-1) is one position down
 			case 'S':
 				console.log("Hoovie: Moving down!")
+				// Checks out of bounds case
 				if ( y-1 < 0){
 					console.log("Hoovie: Ouch! I hit a wall!")
 					break;
 				}else{
+					//Check to see if dirt is in the square Hoovie is moving to
 					if (grid[x][y-1] == "D"){
 						dirt_count++;
 						console.log("Hoovie: Slurpppppp! Dirt cleaned!");
@@ -113,12 +134,15 @@ function move_hoovie(coord_str){
 					hoovie_pos = [x,y-1]
 				}
 				break;
+			// Case to check one position right in the grid (x+1) is one position right
 			case 'E':
 				console.log("Hoovie: Moving right!")
+				// Checks out of bounds case
 				if ( x+1 > grid_width){
 					console.log("Hoovie: Ouch! I hit a wall!")
 					break;
 				}else{
+					//Check to see if dirt is in the square Hoovie is moving to
 					if (grid[x+1][y] == "D"){
 						dirt_count++;
 						console.log("Hoovie: Slurpppppp! Dirt cleaned!");
@@ -128,12 +152,15 @@ function move_hoovie(coord_str){
 					hoovie_pos = [x+1,y]
 				}
 				break;
+			// Case to check one position left in the grid (x-1) is one position left
 			case 'W':
 				console.log("Hoovie: Moving left!")
+				// Checks out of bounds case
 				if ( x-1 < 0){
 					console.log("Hoovie: Ouch! I hit a wall!")
 					break;
 				}else{
+					//Check to see if dirt is in the square Hoovie is moving to
 					if (grid[x-1][y] == "D"){
 						dirt_count++;
 						console.log("Hoovie: Slurpppppp! Dirt cleaned!");
@@ -149,9 +176,14 @@ function move_hoovie(coord_str){
 	}
 }
 
+// Main function: Takes the file contents as input and parses the file line by line. 
+// Given the structure of the file, calls a different function depending on the line's data.
+// Once all functions have been called, it prints the final location of Hoovie and the number of 
+// dirt piles cleaned up.
+
 function main(file){
 	file = file.split("\n")
-	if (file[file.length-1] == '' ) file.pop(); // Weird case where a new line was being included after coords
+	if (file[file.length-1] == '' ) file.pop(); // Weird case where a new line was being included after the coordinate string
 	for (var i = 0; i<file.length; i+=1) {
 		if(i == 0){
 			make_grid(file[i])
@@ -169,9 +201,20 @@ function main(file){
 	//print_grid()
 }
 
-filename = process.argv.slice(2)[0] // Get the name of the input file
+if (process.argv.length < 3){
+	console.log("Usage: \"node hoover.js [input file]\"")
+	process.exit()
+}
 
-//Reads the file
+// Get the name of the input file
+filename = process.argv.slice(2)[0] 
+
+//Takes the file and calls the main function.
+
 fs.readFile(filename, 'utf-8', function (err, contents){
+	if (err){
+		console.log("Oops!!! There was an error! Are you sure your file exists?")
+		process.exit()
+	}
 	main(contents)
 })
